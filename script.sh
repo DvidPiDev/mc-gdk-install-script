@@ -405,7 +405,17 @@ else
     cat > "$MCBE/exit.sh" <<'EOF'
 #!/usr/bin/env bash
 
-pkill java
+for p in /proc/[0-9]*; do
+  pid=${p#/proc/}
+  exe=$(readlink "$p/exe" 2>/dev/null) || continue
+  [[ "$exe" != *"/java" ]] && continue
+  cmd=$(tr "\0" " " < "$p/cmdline")
+  cwd=$(readlink "$p/cwd" 2>/dev/null)
+
+  if [[ "$cmd $cwd" == *proxy* ]]; then
+    kill -15 "$pid"
+  fi
+done
 EOF
     chmod +x "$MCBE/exit.sh"
 
