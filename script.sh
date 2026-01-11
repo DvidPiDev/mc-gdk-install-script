@@ -134,7 +134,7 @@ BASE_PKGS=(
     vulkan-icd-loader
     vulkan-mesa-implicit-layers
     vulkan-mesa-layers
-    curl unzip
+    unzip
 )
 
 if [[ "$GPU_TYPE" == "nvidia" ]]; then
@@ -384,8 +384,8 @@ else
     cat > "$MCBE/start.sh" <<EOF
 #!/usr/bin/env bash
 
-${COMMENT} sleep 10
-${COMMENT} WINEFSYNC=1 WINEPREFIX=$MCBE/prefix $MCBE/proton/files/bin/wine64 $MCBE/client/newloaderx64.exe --lib "X:\.mcbe\client\client.dll" --procname "Minecraft.Windows.exe"
+${COMMENT}sleep 10
+${COMMENT}WINEFSYNC=1 WINEPREFIX=$MCBE/prefix $MCBE/proton/files/bin/wine64 $MCBE/client/injector.exe --lib "X:\.mcbe\client\client.dll" --procname "Minecraft.Windows.exe"
 
 cd $MCBE/proxy
 java -jar ProxyPass.jar
